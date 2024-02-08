@@ -2,11 +2,11 @@ import 'package:audit_task/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomMultiselectDropDown extends StatefulWidget {
-  final Function(List<String>) selectedList;
   final List<String> listOFStrings;
+  List<String> listOFSelectedItem = [];
 
   CustomMultiselectDropDown(
-      {required this.selectedList, required this.listOFStrings});
+      { required this.listOFStrings, required this.listOFSelectedItem});
 
   @override
   createState() {
@@ -15,23 +15,21 @@ class CustomMultiselectDropDown extends StatefulWidget {
 }
 
 class _CustomMultiselectDropDownState extends State<CustomMultiselectDropDown> {
-  List<String> listOFSelectedItem = [];
   String selectedText = "";
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Container(
       margin: EdgeInsets.only(top: 10.0),
       decoration:
-          BoxDecoration(border: Border.all(color: AppColors.primaryGreen)),
+      BoxDecoration(border: Border.all(color: AppColors.primaryGreen)),
       child: ExpansionTile(
         iconColor: AppColors.primaryGreen,
         title: Text(
           "Audit number",
         ),
         children: <Widget>[
-          new ListView.builder(
+          ListView.builder(
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: widget.listOFStrings.length,
@@ -42,15 +40,15 @@ class _CustomMultiselectDropDownState extends State<CustomMultiselectDropDown> {
                     item: widget.listOFStrings[index],
                     selected: (val) {
                       selectedText = val;
-                      if (listOFSelectedItem.contains(val)) {
-                        listOFSelectedItem.remove(val);
+                      if (widget.listOFSelectedItem.contains(val)) {
+                        widget.listOFSelectedItem.remove(val);
                       } else {
-                        listOFSelectedItem.add(val);
+                        widget.listOFSelectedItem.add(val);
                       }
-                      widget.selectedList(listOFSelectedItem);
+                      //TODO??  use updateview in controller
                       setState(() {});
                     },
-                    itemSelected: listOFSelectedItem
+                    itemSelected: widget.listOFSelectedItem
                         .contains(widget.listOFStrings[index])),
               );
             },
@@ -74,7 +72,7 @@ class _ViewItem extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     return Padding(
       padding:
-          EdgeInsets.only(left: size.width * .032, right: size.width * .098),
+      EdgeInsets.only(left: size.width * .032, right: size.width * .098),
       child: Row(
         children: [
           SizedBox(

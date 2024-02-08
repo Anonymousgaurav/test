@@ -16,7 +16,6 @@ class AuditDAO {
   Future<List<AuditModel>> getData(String tableName) async {
     final db = await dbProvider.database;
     final List<Map<String, dynamic>> maps = await db.query(tableName);
-    print('Lenght>>> ${maps.length}');
     return List.generate(maps.length, (index) {
       return AuditModel.fromJson(maps[index]);
     });

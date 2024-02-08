@@ -1,22 +1,12 @@
 import 'package:audit_task/utils/date_time_helper.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_getx_widget.dart';
 import '../../controller/AuditController.dart';
-import '../widgets/audit_header.dart';
 import 'filter_screen.dart';
 
-class AuditScreen extends StatefulWidget {
-  const AuditScreen({Key? key}) : super(key: key);
+class AuditScreen extends StatelessWidget {
+   AuditScreen({super.key});
 
-  @override
-  State<AuditScreen> createState() => _AuditScreenState();
-}
-
-class _AuditScreenState extends State<AuditScreen> {
   final auditController = Get.put(AuditController());
 
   @override
@@ -36,24 +26,28 @@ class _AuditScreenState extends State<AuditScreen> {
                     color: Colors.lightGreen,
                     borderRadius: BorderRadius.circular(9.0),
                   ),
-                  child: Center(child: const Icon(Icons.arrow_back_ios_new))),
+                  child: const Center(child: Icon(Icons.arrow_back_ios_new))),
               Row(
                 children: [
                   InkWell(
                     onTap: () {
                       auditController.fetchAuditData(forceReload: true);
                     },
-                    child: Icon(
+                    child: const Icon(
                       Icons.refresh,
                       color: Colors.black,
                     ),
                   ),
-                  SizedBox(width: 20.0,),
+                  const SizedBox(
+                    width: 20.0,
+                  ),
                   InkWell(
                     onTap: () {
+                      auditController.tempSearchable.clear();
+                      auditController.tempSearchable.addAll(auditController.searchableAuditNumbers);
                       Get.to(FilterScreen());
                     },
-                    child: Icon(
+                    child: const Icon(
                       Icons.double_arrow,
                       color: Colors.black,
                     ),
@@ -80,9 +74,6 @@ class _AuditScreenState extends State<AuditScreen> {
                     if (controller.isLoading.value) {
                       return const Center(child: CircularProgressIndicator());
                     } else {
-                      if (kDebugMode) {
-                        print("database ${controller.dataList}");
-                      }
                       return Obx(() => ListView.builder(
                         itemCount: controller.dataList.length,
                         itemBuilder: (context, index) {
@@ -94,7 +85,8 @@ class _AuditScreenState extends State<AuditScreen> {
                               height: 200.0,
                               width: double.infinity,
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
                                 children: [
                                   Row(
                                     mainAxisAlignment:
@@ -102,10 +94,15 @@ class _AuditScreenState extends State<AuditScreen> {
                                     children: [
                                       Row(
                                         children: [
-                                          Icon(Icons.calendar_today),
-                                          SizedBox(width: 6.0,),
-                                          Text(DateTimeHelper.getFormattedDate(DateTime.parse(controller
-                                              .dataList[index].reqDate!)))
+                                          const Icon(Icons.calendar_today),
+                                          const SizedBox(
+                                            width: 6.0,
+                                          ),
+                                          Text(DateTimeHelper
+                                              .getFormattedDate(
+                                              DateTime.parse(controller
+                                                  .dataList[index]
+                                                  .reqDate!)))
                                         ],
                                       ),
                                       Text(controller
@@ -115,14 +112,18 @@ class _AuditScreenState extends State<AuditScreen> {
                                   const Divider(
                                     color: Colors.black,
                                   ),
-                                  Text(controller.dataList[index].auditName!),
+                                  Text(controller
+                                      .dataList[index].auditName!),
                                   const SizedBox(
                                     height: 6.0,
                                   ),
                                   Visibility(
-                                    visible: controller.dataList[index].auditNumber != null,
-                                    child: Text(
-                                        controller.dataList[index].auditNumber ?? ""),
+                                    visible: controller
+                                        .dataList[index].auditNumber !=
+                                        null,
+                                    child: Text(controller
+                                        .dataList[index].auditNumber ??
+                                        ""),
                                   ),
                                   const SizedBox(
                                     height: 6.0,
@@ -149,11 +150,12 @@ class _AuditScreenState extends State<AuditScreen> {
                               ),
                             ),
                           );
-                        },));
+                        },
+                      ));
                     }
                   },
                 ),
-              )
+              ),
             ],
           ),
         ),
