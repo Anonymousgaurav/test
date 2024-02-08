@@ -10,29 +10,25 @@ import '../database/tables/AuditTable.dart';
 import '../models/AuditModel.dart';
 
 class FetchDataUseCase {
-
   final AuditDAO _auditDAO = AuditDAO();
-  //TODO: dataList = filtered
   List<AuditModel> get dataList => _dataList.value;
   List<AuditModel> originalList = [];
-
   final Dio dio = Dio();
-  final String apiUrl = 'https://qasensata.empowerqlm.com/api/Mobile/Supplier/Audit/All/Complete/Details/100003';
+  final String apiUrl =
+      'https://qasensata.empowerqlm.com/api/Mobile/Supplier/Audit/All/Complete/Details/100003';
   RxBool isLoading = true.obs;
   RxList<AuditModel> auditList = <AuditModel>[].obs;
-  RxList<AuditModel> _dataList = <AuditModel>[].obs;
+  final RxList<AuditModel> _dataList = <AuditModel>[].obs;
   RxList<String> auditNumbers = <String>[].obs;
-  List<String> searchableAuditNumbers =[];
-  List<String> tempSearchable =[];
 
-  Future<List<AuditModel>> fetchAuditData({bool forceReload = false}) async {
+  Future<List<AuditModel>> fetchAuditData({bool refreshData = false}) async {
     isLoading.value = true;
     try {
-      if (forceReload) {
+      if (refreshData) {
         await _auditDAO.deleteTable(AuditTable.AUDIT_TABLE_NAME);
       }
       List<AuditModel> dataFromDatabase =
-      await _auditDAO.getData(AuditTable.AUDIT_TABLE_NAME);
+          await _auditDAO.getData(AuditTable.AUDIT_TABLE_NAME);
       if (dataFromDatabase.isEmpty) {
         Response response = await dio.get(apiUrl, options: _getOptions());
         if (response.statusCode == 200) {
@@ -44,9 +40,7 @@ class FetchDataUseCase {
           response.data.forEach((element) {
             _dataList.value.add(AuditModel.fromJson(element));
           });
-
         } else {
-
           if (kDebugMode) {
             print('Error: ${response.statusCode}');
           }
@@ -56,12 +50,7 @@ class FetchDataUseCase {
       }
       originalList.clear();
       originalList.addAll(dataList);
-
-      for (var numbers in _dataList) {
-        if (numbers.auditNumber != null) {
-          auditNumbers.add(numbers.auditNumber!);
-        }
-      }
+      _getAuditNumbers();
       isLoading.value = false;
     } catch (e) {
       if (kDebugMode) {
@@ -71,7 +60,6 @@ class FetchDataUseCase {
     }
 
     return _dataList.value;
-
   }
 
   Options _getOptions() {
@@ -87,5 +75,14 @@ class FetchDataUseCase {
     auditList
         .assignAll(jsonData.map((json) => AuditModel.fromJson(json)).toList());
     return auditList;
+  }
+
+  void _getAuditNumbers() {
+    for (var numbers in _dataList) {
+      if (numbers.auditNumber != null) {
+        auditNumbers.add(numbers.auditNumber!);
+      }
+    }
+    print('Oaudit list >>>> ${auditNumbers.value.length}');
   }
 }

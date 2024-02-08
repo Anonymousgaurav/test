@@ -4,6 +4,7 @@ import 'package:audit_task/presentation/screens/audit_screen.dart';
 import 'package:audit_task/presentation/widgets/custom_multi_drop_down.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../../controller/FilterController.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/constant.dart';
 import '../../utils/date_time_helper.dart';
@@ -13,7 +14,7 @@ import 'package:get/get.dart';
 class FilterScreen extends StatelessWidget {
    FilterScreen({super.key});
 
-  final controller = Get.put(AuditController());
+  /// final controller = Get.put(AuditController());
   int selectedContainerIndex = -1;
 
   final TextEditingController startDateController = TextEditingController();
@@ -24,212 +25,201 @@ class FilterScreen extends StatelessWidget {
 
    @override
    Widget build(BuildContext context) {
-     return Scaffold(
-       appBar: AppBar(
-         leading: IconButton(
-           onPressed: () {},
-           icon: Icon(
-             Icons.arrow_back,
-             color: Colors.black,
+     return GetBuilder<FilterController>(builder: (controller)
+       {
+         print('Audit number list >>>> ${controller.allAuditNumbers.length}');
+         return SafeArea(
+           child: Scaffold(
+             body: Padding(
+                 padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 20.0),
+                 child: SingleChildScrollView(
+                   child: Column(
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     children: [
+                       const Text('Filters',
+                           style:
+                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                       verticalSpaceMedium,
+                       const Text(
+                         'Status',
+                         style: TextStyle(fontSize: 20),
+                       ),
+                       verticalSpaceMedium,
+                       Wrap(
+                         spacing: 10, // Spacing between containers
+                         runSpacing: 10, // Spacing between rows
+                         children: [
+                           customContainer(
+                             child: const Text('All'),
+                             height: 50,
+                             width: 50,
+                             color: selectedContainerIndex == 0
+                                 ? Colors.green
+                                 : Colors.white,
+                             radius: 5,
+                             onTap: () {
+
+                             },
+                           ),
+                           customContainer(
+                             child: const Text('Rejected'),
+                             height: 50,
+                             width: 80,
+                             color: selectedContainerIndex == 1
+                                 ? Colors.green
+                                 : Colors.transparent,
+                             radius: 5,
+                             onTap: () {
+
+                             },
+                           ),
+                           customContainer(
+                             child: const Text('Requested'),
+                             height: 50,
+                             width: 80,
+                             color: selectedContainerIndex == 2
+                                 ? Colors.green
+                                 : Colors.transparent,
+                             radius: 10,
+                             onTap: () {
+
+                             },
+                           ),
+                           customContainer(
+                             child: const Text('Released'),
+                             height: 50,
+                             width: 80,
+                             color: selectedContainerIndex == 3
+                                 ? Colors.green
+                                 : Colors.transparent,
+                             radius: 5,
+                             onTap: () {
+
+                             },
+                           ),
+                           customContainer(
+                             child: const Text('Submitted'),
+                             height: 50,
+                             width: 80,
+                             color: selectedContainerIndex == 4
+                                 ? Colors.green
+                                 : Colors.transparent,
+                             radius: 5,
+                             onTap: () {
+
+                             },
+                           ),
+                           customContainer(
+                             child: const Text('Closed'),
+                             height: 50,
+                             width: 80,
+                             color: selectedContainerIndex == 5
+                                 ? Colors.green
+                                 : Colors.transparent,
+                             radius: 5,
+                             onTap: () {
+
+                             },
+                           ),
+                         ],
+                       ),
+                       verticalSpaceMedium,
+                       Row(
+                         children: [
+                           Expanded(
+                             child: TextFormField(
+                               readOnly: true,
+                               controller: startDateController,
+                               decoration: InputDecoration(
+                                 labelText: 'From',
+                                 hintText: startDateController.text.isEmpty
+                                     ? 'Start Date'
+                                     : startDateController.text,
+                                 border: OutlineInputBorder(
+                                   borderRadius: BorderRadius.circular(10),
+                                 ),
+                                 suffixIcon: IconButton(
+                                     onPressed: () => _selectStartDate(context),
+                                     icon: Icon(Icons.calendar_today)),
+                               ),
+                             ),
+                           ),
+
+                           horizontalSpaceSmall,
+
+                           Expanded(
+                             child: TextFormField(
+                               readOnly: true,
+                               controller: endDateController,
+                               decoration: InputDecoration(
+                                 labelText: 'To',
+                                 hintText: endDateController.text.isEmpty
+                                     ? 'End Date'
+                                     : endDateController.text,
+                                 fillColor: AppColors.primaryGreen,
+                                 border: OutlineInputBorder(
+                                   borderRadius: BorderRadius.circular(10),
+                                 ),
+                                 suffixIcon: IconButton(
+                                     onPressed: () => _selectEndDate(context),
+                                     icon: Icon(Icons.calendar_today)),
+                               ),
+                             ),
+                           ),
+                         ],
+                       ),
+                       verticalSpaceMedium,
+                       CustomMultiselectDropDown(
+                         listOFStrings: controller.allAuditNumbers,
+                         listOFSelectedItem: controller.tempSearchable,
+                       ),
+                       verticalSpaceMedium,
+
+                       verticalSpaceLarge,
+                       Row(
+                         children: [
+                           Expanded(
+                             child: ElevatedButton(
+                               onPressed: () {
+                                 /// controller.searchableAuditNumbers.clear();
+                                 /// controller.searchableAuditNumbers.addAll(controller.tempSearchable);
+
+                               ///  controller.filterItems(controller.originalList, controller.searchableAuditNumbers);
+                                 Get.to( AuditScreen());
+                               },
+                               child: Text('Apply'),
+                               style: ElevatedButton.styleFrom(
+                                 primary: AppColors.primaryGreen,
+                                 onPrimary: Colors.black,
+                                 shape: RoundedRectangleBorder(
+                                   borderRadius: BorderRadius.circular(10),
+                                 ),
+                               ),
+                             ),
+                           ),
+                           horizontalSpaceMedium,
+                           Expanded(
+                             child: ElevatedButton(
+                               onPressed: () {},
+                               child: Text('Clear'),
+                               style: ElevatedButton.styleFrom(
+                                 primary: Colors.grey,
+                                 onPrimary: Colors.white,
+                                 shape: RoundedRectangleBorder(
+                                   borderRadius: BorderRadius.circular(10),
+                                 ),
+                               ),
+                             ),
+                           ),
+                         ],
+                       ),
+                       verticalSpaceLarge
+                     ],
+                   ),
+                 )),
            ),
-           focusColor: AppColors.primaryGreen,
-         ),
-       ),
-       body: Padding(
-           padding: const EdgeInsets.symmetric(horizontal: 20.0),
-           child: SingleChildScrollView(
-             child: Column(
-               crossAxisAlignment: CrossAxisAlignment.start,
-               children: [
-                 Text('Filters',
-                     style:
-                     TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                 verticalSpaceMedium,
-                 Text(
-                   'Status',
-                   style: TextStyle(fontSize: 20),
-                 ),
-                 verticalSpaceMedium,
-                 Wrap(
-                   spacing: 10, // Spacing between containers
-                   runSpacing: 10, // Spacing between rows
-                   children: [
-                     customContainer(
-                       child: const Text('All'),
-                       height: 50,
-                       width: 50,
-                       color: selectedContainerIndex == 0
-                           ? Colors.green
-                           : Colors.white,
-                       radius: 5,
-                       onTap: () {
-
-                       },
-                     ),
-                     customContainer(
-                       child: const Text('Rejected'),
-                       height: 50,
-                       width: 80,
-                       color: selectedContainerIndex == 1
-                           ? Colors.green
-                           : Colors.transparent,
-                       radius: 5,
-                       onTap: () {
-
-                       },
-                     ),
-                     customContainer(
-                       child: const Text('Requested'),
-                       height: 50,
-                       width: 80,
-                       color: selectedContainerIndex == 2
-                           ? Colors.green
-                           : Colors.transparent,
-                       radius: 10,
-                       onTap: () {
-
-                       },
-                     ),
-                     customContainer(
-                       child: const Text('Released'),
-                       height: 50,
-                       width: 80,
-                       color: selectedContainerIndex == 3
-                           ? Colors.green
-                           : Colors.transparent,
-                       radius: 5,
-                       onTap: () {
-
-                       },
-                     ),
-                     customContainer(
-                       child: const Text('Submitted'),
-                       height: 50,
-                       width: 80,
-                       color: selectedContainerIndex == 4
-                           ? Colors.green
-                           : Colors.transparent,
-                       radius: 5,
-                       onTap: () {
-
-                       },
-                     ),
-                     customContainer(
-                       child: const Text('Closed'),
-                       height: 50,
-                       width: 80,
-                       color: selectedContainerIndex == 5
-                           ? Colors.green
-                           : Colors.transparent,
-                       radius: 5,
-                       onTap: () {
-
-                       },
-                     ),
-                   ],
-                 ),
-                 verticalSpaceMedium,
-                 Row(
-                   children: [
-                     Expanded(
-                       child: TextFormField(
-                         readOnly: true,
-                         controller: startDateController,
-                         decoration: InputDecoration(
-                           labelText: 'From',
-                           hintText: startDateController.text.isEmpty
-                               ? 'Start Date'
-                               : startDateController.text,
-                           border: OutlineInputBorder(
-                             borderRadius: BorderRadius.circular(10),
-                           ),
-                           suffixIcon: IconButton(
-                               onPressed: () => _selectStartDate(context),
-                               icon: Icon(Icons.calendar_today)),
-                         ),
-                       ),
-                     ),
-
-                     horizontalSpaceSmall,
-
-                     Expanded(
-                       child: TextFormField(
-                         readOnly: true,
-                         controller: endDateController,
-                         decoration: InputDecoration(
-                           labelText: 'To',
-                           hintText: endDateController.text.isEmpty
-                               ? 'End Date'
-                               : endDateController.text,
-                           fillColor: AppColors.primaryGreen,
-                           border: OutlineInputBorder(
-                             borderRadius: BorderRadius.circular(10),
-                           ),
-                           suffixIcon: IconButton(
-                               onPressed: () => _selectEndDate(context),
-                               icon: Icon(Icons.calendar_today)),
-                         ),
-                       ),
-                     ),
-                   ],
-                 ),
-                 verticalSpaceMedium,
-                 CustomMultiselectDropDown(
-                   listOFStrings: controller.auditNumbers,
-                   listOFSelectedItem: controller.tempSearchable,
-                 ),
-                 verticalSpaceMedium,
-                 // ListView.builder(
-                 //   shrinkWrap: true,
-                 //   physics: const NeverScrollableScrollPhysics(),
-                 //   itemCount: 1,
-                 //   itemBuilder: (context, index) {
-                 //     final audit = controller.auditList.value[index];
-                 //     return buildDropdown(audit);
-                 //   },
-                 // ),
-                 verticalSpaceLarge,
-                 Row(
-                   children: [
-                     Expanded(
-                       child: ElevatedButton(
-                         onPressed: () {
-                           controller.searchableAuditNumbers.clear();
-                           controller.searchableAuditNumbers.addAll(controller.tempSearchable);
-
-                           controller.filterItems(controller.originalList, controller.searchableAuditNumbers);
-                           Get.to( AuditScreen());
-                         },
-                         child: Text('Apply'),
-                         style: ElevatedButton.styleFrom(
-                           primary: AppColors.primaryGreen,
-                           onPrimary: Colors.black,
-                           shape: RoundedRectangleBorder(
-                             borderRadius: BorderRadius.circular(10),
-                           ),
-                         ),
-                       ),
-                     ),
-                     horizontalSpaceMedium,
-                     Expanded(
-                       child: ElevatedButton(
-                         onPressed: () {},
-                         child: Text('Clear'),
-                         style: ElevatedButton.styleFrom(
-                           primary: Colors.grey,
-                           onPrimary: Colors.white,
-                           shape: RoundedRectangleBorder(
-                             borderRadius: BorderRadius.circular(10),
-                           ),
-                         ),
-                       ),
-                     ),
-                   ],
-                 ),
-                 verticalSpaceLarge
-               ],
-             ),
-           )),
+         );
+       },
      );
    }
 

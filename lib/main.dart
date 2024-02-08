@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 import 'models/binding/controller_binding.dart';
+import 'navigator/AppPages.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,9 +20,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: false,
-
       ),
-      home:   AuditScreen(),
+      home:   const AuditScreen(),
+      getPages: AppPages.pages,
     );
   }
 }
