@@ -24,6 +24,7 @@ AuditModel _$AuditModelFromJson(Map<String, dynamic> json) => AuditModel(
           ?.map((e) =>
               SupplierCoordinatorsModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      json['plantName'] as String?,
     );
 
 Map<String, dynamic> _$AuditModelToJson(AuditModel instance) =>
@@ -38,6 +39,7 @@ Map<String, dynamic> _$AuditModelToJson(AuditModel instance) =>
       'templateId': instance.templateID,
       'templateName': instance.templateName,
       'auditTypeName': instance.auditTypeName,
+      'plantName': instance.plantName,
       'supplierCoordinators':
           instance.supplierCoordinators?.map((e) => e.toJson()).toList(),
       'OnSiteAuditorModel':

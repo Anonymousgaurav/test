@@ -6,7 +6,7 @@ class CustomMultiselectDropDown extends StatefulWidget {
   List<String> listOFSelectedItem = [];
 
   CustomMultiselectDropDown(
-      { required this.listOFStrings, required this.listOFSelectedItem});
+      {super.key,  required this.listOFStrings, required this.listOFSelectedItem});
 
   @override
   createState() {
@@ -20,22 +20,22 @@ class _CustomMultiselectDropDownState extends State<CustomMultiselectDropDown> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 10.0),
+      margin: const EdgeInsets.only(top: 10.0),
       decoration:
       BoxDecoration(border: Border.all(color: AppColors.primaryGreen)),
       child: ExpansionTile(
-        iconColor: AppColors.primaryGreen,
-        title: Text(
+        iconColor: Colors.grey,
+        title: const Text(
           "Audit number",
         ),
         children: <Widget>[
           ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: widget.listOFStrings.length,
             itemBuilder: (BuildContext context, int index) {
               return Container(
-                margin: EdgeInsets.only(bottom: 8.0),
+                margin: const EdgeInsets.only(bottom: 8.0),
                 child: _ViewItem(
                     item: widget.listOFStrings[index],
                     selected: (val) {

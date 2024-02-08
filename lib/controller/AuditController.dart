@@ -13,6 +13,7 @@ class AuditController extends GetxController {
   RxList<AuditModel> auditList = <AuditModel>[].obs;
   final RxList<AuditModel> _dataList = <AuditModel>[].obs;
   List<String> tempSearchable = [];
+  List<AuditModel> noFilterList = [];
   final FetchDataUseCase _fetchDataUseCase = FetchDataUseCase();
 
   @override
@@ -29,5 +30,14 @@ class AuditController extends GetxController {
     isLoading.value = false;
   }
 
+
+  // void filterItems(List<AuditModel> itemList, List<String> targetCategories) {
+  //   List<AuditModel> temp;
+  //   targetCategories.isEmpty ? temp = noFilterList : temp = itemList.where((item) =>
+  //       targetCategories.contains(item.auditNumber)
+  //   ).toList();
+  //   _dataList.value.clear();
+  //   _dataList.value = temp;
+  // }
   void updateView() => update([]);
 }

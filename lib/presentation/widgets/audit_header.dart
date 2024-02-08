@@ -2,46 +2,25 @@ import 'package:audit_task/presentation/screens/filter_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../controller/AuditController.dart';
+import '../../controller/FilterController.dart';
+
 class AuditHeader extends StatelessWidget {
-  const AuditHeader({Key? key});
+  const AuditHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        Container(
-            padding: const EdgeInsets.all(8.0),
-            decoration: BoxDecoration(
-              color: Colors.lightGreen,
-              borderRadius: BorderRadius.circular(9.0),
-            ),
-            child: Center(child: const Icon(Icons.arrow_back_ios_new))),
-        Row(
-          children: [
-            InkWell(
-              onTap: () {
-              },
-              child: Icon(
-                Icons.refresh,
-                color: Colors.black,
-              ),
-            ),
-            SizedBox(width: 20.0,),
-            InkWell(
-              onTap: () {
-                Get.to(FilterScreen());
-              },
-              child: Icon(
-                Icons.double_arrow,
-                color: Colors.black,
-              ),
-            )
-          ],
-        )
-      ],
+    return InkWell(
+      onTap: () {
+        Get.find<AuditController>().tempSearchable.clear();
+        Get.find<AuditController>().tempSearchable.addAll(
+            Get.find<FilterController>().searchableAuditNumbers);
+        Get.to(FilterScreen());
+      },
+      child: const Icon(
+        Icons.filter,
+        color: Colors.black,
+      ),
     );
   }
 }

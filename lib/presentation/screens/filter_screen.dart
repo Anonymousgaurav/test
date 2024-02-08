@@ -1,14 +1,14 @@
-import 'package:audit_task/controller/AuditController.dart';
 import 'package:audit_task/models/AuditModel.dart';
 import 'package:audit_task/presentation/screens/audit_screen.dart';
+import 'package:audit_task/presentation/styles/AppStyles.dart';
 import 'package:audit_task/presentation/widgets/custom_multi_drop_down.dart';
+import 'package:audit_task/utils/WidgetFactory.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../controller/FilterController.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/constant.dart';
 import '../../utils/date_time_helper.dart';
-import '../../utils/ui_helpers.dart';
 import 'package:get/get.dart';
 
 class FilterScreen extends StatelessWidget {
@@ -31,23 +31,23 @@ class FilterScreen extends StatelessWidget {
           child: Scaffold(
             body: Padding(
                 padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0, vertical: 20.0),
+                    horizontal: _Dimens.H_MARGIN, vertical: _Dimens.V_MARGIN),
                 child: SingleChildScrollView(
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const Text('Filters',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold)),
-                      verticalSpaceMedium,
-                      const Text(
+                       Text('Filters',
+                          style: AppStyles.filterTitle),
+                       Text(
                         'Status',
-                        style: TextStyle(fontSize: 20),
+                        style: AppStyles.subTitle,
                       ),
-                      verticalSpaceMedium,
+                      WidgetFactory.emptyBox(height: 10.0),
                       Wrap(
-                        spacing: 10, // Spacing between containers
-                        runSpacing: 10, // Spacing between rows
+                        spacing: 10,
+                        runSpacing: 10,
                         children: [
                           customContainer(
                             child: const Text('All'),
@@ -111,8 +111,11 @@ class FilterScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      verticalSpaceMedium,
+                      WidgetFactory.emptyBox(height: 10.0),
                       Row(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
                             child: TextFormField(
@@ -128,11 +131,11 @@ class FilterScreen extends StatelessWidget {
                                 ),
                                 suffixIcon: IconButton(
                                     onPressed: () => _selectStartDate(context),
-                                    icon: Icon(Icons.calendar_today)),
+                                    icon: const Icon(Icons.calendar_today)),
                               ),
                             ),
                           ),
-                          horizontalSpaceSmall,
+                          WidgetFactory.emptyBox(width: 10.0),
                           Expanded(
                             child: TextFormField(
                               readOnly: true,
@@ -148,19 +151,27 @@ class FilterScreen extends StatelessWidget {
                                 ),
                                 suffixIcon: IconButton(
                                     onPressed: () => _selectEndDate(context),
-                                    icon: Icon(Icons.calendar_today)),
+                                    icon: const Icon(Icons.calendar_today)),
                               ),
                             ),
                           ),
                         ],
                       ),
-                      verticalSpaceMedium,
+                      WidgetFactory.emptyBox(height: 10.0),
                       CustomMultiselectDropDown(
                         listOFStrings: controller.allAuditNumbers,
                         listOFSelectedItem: controller.tempSearchable,
                       ),
-                      verticalSpaceMedium,
-                      verticalSpaceLarge,
+                      WidgetFactory.emptyBox(height: 10.0),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: 1,
+                        itemBuilder: (context, index) {
+                          return buildDropdown(controller.auditList[index],controller.auditList.value);
+                        },
+                      ),
+                      WidgetFactory.emptyBox(height: 20.0),
                       Row(
                         children: [
                           Expanded(
@@ -171,11 +182,8 @@ class FilterScreen extends StatelessWidget {
                                     .addAll(controller.tempSearchable);
                                 controller.filterItems(controller.auditList,
                                     controller.searchableAuditNumbers);
-                                print(
-                                    'searchable items >>>> ${controller.searchableAuditNumbers}');
                                 Get.to(() => const AuditScreen());
                               },
-                              child: Text('Apply'),
                               style: ElevatedButton.styleFrom(
                                 primary: AppColors.primaryGreen,
                                 onPrimary: Colors.black,
@@ -183,13 +191,13 @@ class FilterScreen extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
+                              child: const Text('Apply'),
                             ),
                           ),
-                          horizontalSpaceMedium,
+                          WidgetFactory.emptyBox(width: 15.0),
                           Expanded(
                             child: ElevatedButton(
                               onPressed: () {},
-                              child: Text('Clear'),
                               style: ElevatedButton.styleFrom(
                                 primary: Colors.grey,
                                 onPrimary: Colors.white,
@@ -197,14 +205,15 @@ class FilterScreen extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
+                              child: const Text('Clear'),
                             ),
                           ),
                         ],
                       ),
-                      verticalSpaceLarge
+                      WidgetFactory.emptyBox(height: 40.0),
                     ],
                   ),
-                )),
+                ),),
           ),
         );
       },
@@ -217,10 +226,6 @@ class FilterScreen extends StatelessWidget {
     if (picked != null && picked != _startDate) {
       _startDate = picked;
       startDateController.text = DateFormat('yy/MMM/dd').format(_startDate!);
-      // setState(() {
-      //   _startDate = picked;
-      //   startDateController.text = DateFormat('yy/MMM/dd').format(_startDate!);
-      // });
     }
   }
 
@@ -229,14 +234,10 @@ class FilterScreen extends StatelessWidget {
     if (picked != null && picked != _endDate) {
       _endDate = picked;
       endDateController.text = DateFormat('yy/MMM/dd').format(_endDate!);
-      // setState(() {
-      //   _endDate = picked;
-      //   endDateController.text = DateFormat('yy/MMM/dd').format(_endDate!);
-      // });
     }
   }
 
-  Widget buildDropdown(AuditModel audit) {
+  Widget buildDropdown(AuditModel audit,List<AuditModel> list) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Container(
@@ -246,7 +247,7 @@ class FilterScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            verticalSpaceMedium,
+            WidgetFactory.emptyBox(height: 15.0),
             DropdownButtonFormField<String>(
               value: null,
               decoration: InputDecoration(
@@ -257,17 +258,16 @@ class FilterScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),
-              items: [
-                // DropdownMenuItem<String>(
-                //   value: audit.plantName.toString().split('.').last,
-                //   child: Text(audit.plantName.toString().split('.').last),
-                // ),
-              ],
+              items: list.map<DropdownMenuItem<String>>((AuditModel value) {
+                return DropdownMenuItem<String>(
+                  value: "Select",
+                  child: Text(value.plantName ?? "No Plant name"),
+                );
+              }).toList(),
               onChanged: (String? newValue) {
-                // Handle dropdown value changes
               },
             ),
-            verticalSpaceMedium,
+            WidgetFactory.emptyBox(height: 15.0),
             DropdownButtonFormField<String>(
               value: null,
               decoration: InputDecoration(
@@ -279,16 +279,16 @@ class FilterScreen extends StatelessWidget {
                 ),
               ),
               items: [
-                // DropdownMenuItem<String>(
-                //   value: audit.supplierName.toString().split('.').last,
-                //   child: Text(audit.supplierName.toString().split('.').last),
-                // ),
+                DropdownMenuItem<String>(
+                  value: audit.suppliersName.toString().split('.').last,
+                  child: Text(audit.suppliersName.toString().split('.').last),
+                ),
               ],
               onChanged: (String? newValue) {
                 // Handle dropdown value changes
               },
             ),
-            verticalSpaceMedium,
+            WidgetFactory.emptyBox(height: 15.0),
             DropdownButtonFormField<String>(
               value: null,
               decoration: InputDecoration(
@@ -314,4 +314,10 @@ class FilterScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+
+abstract class _Dimens {
+  static const double H_MARGIN = 20.0;
+  static const double V_MARGIN = 20.0;
 }
