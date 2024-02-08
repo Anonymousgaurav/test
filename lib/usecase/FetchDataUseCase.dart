@@ -8,9 +8,9 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import '../database/dao/AuditDAO.dart';
 import '../database/tables/AuditTable.dart';
 import '../models/AuditModel.dart';
-import '../usecase/FetchDataUseCase.dart';
 
-class AuditController extends GetxController {
+class FetchDataUseCase {
+
   final AuditDAO _auditDAO = AuditDAO();
   //TODO: dataList = filtered
   List<AuditModel> get dataList => _dataList.value;
@@ -24,23 +24,8 @@ class AuditController extends GetxController {
   RxList<String> auditNumbers = <String>[].obs;
   List<String> searchableAuditNumbers =[];
   List<String> tempSearchable =[];
-  final FetchDataUseCase _fetchDataUseCase = FetchDataUseCase();
 
-  @override
-  void onInit() {
-    fetchAuditData(forceReload: false);
-    super.onInit();
-  }
-
-  Future<void> fetchDataFromUseCase() async {
-    final result = await _fetchDataUseCase.fetchAuditData();
-    _dataList.value = result;
-  }
-
-
-
-
-  Future<void> fetchAuditData({bool forceReload = false}) async {
+  Future<List<AuditModel>> fetchAuditData({bool forceReload = false}) async {
     isLoading.value = true;
     try {
       if (forceReload) {
@@ -56,11 +41,10 @@ class AuditController extends GetxController {
             _auditDAO.insertAudit(AuditTable.AUDIT_TABLE_NAME, category);
           });
           _dataList.value.clear();
-
-
           response.data.forEach((element) {
             _dataList.value.add(AuditModel.fromJson(element));
           });
+
         } else {
 
           if (kDebugMode) {
@@ -85,6 +69,9 @@ class AuditController extends GetxController {
       }
       isLoading.value = false;
     }
+
+    return _dataList.value;
+
   }
 
   Options _getOptions() {
@@ -101,23 +88,4 @@ class AuditController extends GetxController {
         .assignAll(jsonData.map((json) => AuditModel.fromJson(json)).toList());
     return auditList;
   }
-
-
- void filterItems(List<AuditModel> itemList, List<String> targetCategories) {
-    var temp;
-    if(targetCategories.isEmpty)
-      {
-        temp = originalList;
-      }
-    else{
-       temp = itemList.where((item) =>
-          targetCategories.contains(item.auditNumber)
-      ).toList();
-    }
-    _dataList.value.clear();
-    _dataList.value = temp;
-  }
-
-void updateView() => update([]);
-
 }
