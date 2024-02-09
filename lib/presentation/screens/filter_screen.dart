@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../controller/FilterController.dart';
+import '../../models/AuditModel.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/constant.dart';
 import '../../utils/date_time_helper.dart';
@@ -19,6 +20,7 @@ class FilterScreen extends StatelessWidget {
 
   DateTime? _startDate;
   DateTime? _endDate;
+  List<String> plantName = [];
 
   @override
   Widget build(BuildContext context) {
@@ -165,7 +167,7 @@ class FilterScreen extends StatelessWidget {
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: 1,
                       itemBuilder: (context, index) {
-                        return buildDropdown();
+                        return buildDropdown(controller.plantNames.value);
                       },
                     ),
                     WidgetFactory.emptyBox(height: 20.0),
@@ -211,24 +213,8 @@ class FilterScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _selectStartDate(BuildContext context) async {
-    final DateTime? picked =
-        await DateTimeHelper.selectDate(context, _startDate);
-    if (picked != null && picked != _startDate) {
-      _startDate = picked;
-      startDateController.text = DateFormat('yy/MMM/dd').format(_startDate!);
-    }
-  }
 
-  Future<void> _selectEndDate(BuildContext context) async {
-    final DateTime? picked = await DateTimeHelper.selectDate(context, _endDate);
-    if (picked != null && picked != _endDate) {
-      _endDate = picked;
-      endDateController.text = DateFormat('yy/MMM/dd').format(_endDate!);
-    }
-  }
-
-  Widget buildDropdown() {
+  Widget buildDropdown(List<String> plantNames) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Container(
@@ -250,10 +236,15 @@ class FilterScreen extends StatelessWidget {
                 ),
               ),
               items: [
-
+                DropdownMenuItem<String>(
+                  value: plantNames.first.toString().split('.').last,
+                  child: Text(plantNames.first.toString().split('.').last),
+                ),
               ],
-              onChanged: (String? newValue) {},
+              onChanged: (String? newValue) {
+              },
             ),
+
             WidgetFactory.emptyBox(height: 15.0),
             DropdownButtonFormField<String>(
               value: null,
@@ -295,6 +286,32 @@ class FilterScreen extends StatelessWidget {
       ),
     );
   }
+
+  Future<void> _selectStartDate(BuildContext context) async {
+    final DateTime? picked =
+    await DateTimeHelper.selectDate(context, _startDate);
+    if (picked != null && picked != _startDate) {
+      _startDate = picked;
+      startDateController.text = DateFormat('yy/MMM/dd').format(_startDate!);
+    }
+  }
+
+  Future<void> _selectEndDate(BuildContext context) async {
+    final DateTime? picked = await DateTimeHelper.selectDate(context, _endDate);
+    if (picked != null && picked != _endDate) {
+      _endDate = picked;
+      endDateController.text = DateFormat('yy/MMM/dd').format(_endDate!);
+    }
+  }
+
+  void _getPlantName(List<AuditModel> auditList)
+  {
+    for (var name in auditList) {
+      if (name.plantName != "") {
+        plantName.addAll(plantName);
+      }
+    }  }
+
 }
 
 abstract class _Dimens {
