@@ -41,4 +41,5 @@ class FilterController extends GetxController {
     searchableAuditNumbers.clear();
     tempSearchable.clear();
   }
+
 }

@@ -1,5 +1,3 @@
-import 'package:audit_task/models/AuditModel.dart';
-import 'package:audit_task/presentation/screens/audit_screen.dart';
 import 'package:audit_task/presentation/styles/AppStyles.dart';
 import 'package:audit_task/presentation/widgets/custom_multi_drop_down.dart';
 import 'package:audit_task/utils/WidgetFactory.dart';
@@ -56,8 +54,9 @@ class FilterScreen extends StatelessWidget {
                               ? Colors.green
                               : Colors.white,
                           radius: 5,
-                          onTap: () {},
-                        ),
+                          onTap: () {
+
+                          },                        ),
                         customContainer(
                           child: const Text('Rejected'),
                           height: 50,
