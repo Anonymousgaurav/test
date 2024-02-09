@@ -52,6 +52,7 @@ class AuditModel extends BaseModel {
       'auditName': auditName,
       'auditNumber': auditNumber,
       'plantName': plantName,
+      'templateName': templateName,
     };
   }
 }

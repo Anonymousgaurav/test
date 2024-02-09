@@ -86,17 +86,9 @@ class AuditScreen extends StatelessWidget {
                                               .auditNumber ??
                                               "Audit number not available"),
                                           WidgetFactory.emptyBox(height: 6.0),
-                                           AuditFactory.rowWidget(controller.dataList[index].plantName),
+                                           AuditFactory.rowWidget(controller.dataList[index].plantName,title: "Plant :"),
                                           WidgetFactory.emptyBox(height: 6.0),
-                                          const Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: [
-                                              Text('Audit Coordinator: '),
-                                              Text("Name")
-                                            ],
-                                          ),
+                                          AuditFactory.rowWidget(controller.dataList[index].templateName,title: "Template :"),
                                           WidgetFactory.divider(context),
                                           Row(
                                             mainAxisSize: MainAxisSize.max,
