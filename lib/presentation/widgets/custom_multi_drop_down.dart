@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomMultiselectDropDown extends StatefulWidget {
   final List<String> listOFStrings;
-  List<String> listOFSelectedItem = [];
+  List<String> listOFSelectedItem;
 
   CustomMultiselectDropDown(
       {super.key,
@@ -16,7 +16,6 @@ class CustomMultiselectDropDown extends StatefulWidget {
 }
 
 class _CustomMultiselectDropDownState extends State<CustomMultiselectDropDown> {
-  String selectedText = "";
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +39,6 @@ class _CustomMultiselectDropDownState extends State<CustomMultiselectDropDown> {
                 child: _ViewItem(
                     item: widget.listOFStrings[index],
                     selected: (val) {
-                      selectedText = val;
                       if (widget.listOFSelectedItem.contains(val)) {
                         widget.listOFSelectedItem.remove(val);
                       } else {

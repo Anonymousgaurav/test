@@ -28,11 +28,9 @@ class FilterController extends GetxController {
     }
   }
 
-
-
   void onTapApply()
   {
-   searchableAuditNumbers.clear();
+  searchableAuditNumbers.clear();
    searchableAuditNumbers.addAll(tempSearchable);
     AuditController.to.filterItems(auditList, searchableAuditNumbers);
     Get.to(() => const AuditScreen());

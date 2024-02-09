@@ -27,8 +27,7 @@ class AuditScreen extends StatelessWidget {
             ),
             body: RefreshIndicator(
               onRefresh: () async {
-                Get.find<AuditController>()
-                    .fetchDataFromUseCase(refreshData: true);
+                Get.find<AuditController>().fetchDataFromUseCase(refreshData: true);
               },
               child: Container(
                 padding: const EdgeInsets.only(

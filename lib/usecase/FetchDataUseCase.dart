@@ -23,8 +23,7 @@ class FetchDataUseCase {
       if (refreshData) {
         await _auditDAO.deleteTable(AuditTable.AUDIT_TABLE_NAME);
       }
-      List<AuditModel> dataFromDatabase =
-          await _auditDAO.getData(AuditTable.AUDIT_TABLE_NAME);
+      List<AuditModel> dataFromDatabase = await _auditDAO.getData(AuditTable.AUDIT_TABLE_NAME);
       if (dataFromDatabase.isEmpty) {
         Response response = await dio.get(apiUrl, options: _getOptions());
         if (response.statusCode == 200) {
