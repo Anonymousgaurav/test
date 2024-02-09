@@ -40,10 +40,11 @@ class AuditController extends GetxController {
   }
 
   void filterItems(List<AuditModel> itemList, List<String> targetCategories) async {
+   print("Item lenghth >>>> ${itemList.length}");
     var temp;
     if(targetCategories.isEmpty)
     {
-      temp = originalList;
+      temp = itemList;
     }
     else{
       temp = itemList.where((item) =>
@@ -52,6 +53,10 @@ class AuditController extends GetxController {
     }
     _dataList.value.clear();
     _dataList.value = temp;
+
   }
+
+  void updateView() => update([]);
+
 
 }

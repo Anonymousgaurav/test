@@ -11,11 +11,13 @@ class FilterController extends GetxController {
   RxList<String> plantNames = <String>[].obs;
   List<String> tempSearchable = [];
   List<String> searchableAuditNumbers = [];
+  List<AuditModel> auditModelList = [];
 
   @override
   void onInit() async {
     AuditController auditController = Get.find<AuditController>();
     auditList.value = auditController.dataList;
+    auditModelList.addAll(auditController.originalList);
     _getAuditNumbers(auditController);
     super.onInit();
   }
@@ -32,7 +34,8 @@ class FilterController extends GetxController {
   {
   searchableAuditNumbers.clear();
    searchableAuditNumbers.addAll(tempSearchable);
-    AuditController.to.filterItems(auditList, searchableAuditNumbers);
+   print('org leng>>> ${auditModelList.length}');
+    AuditController.to.filterItems(auditModelList, searchableAuditNumbers);
     Get.to(() => const AuditScreen());
   }
 
