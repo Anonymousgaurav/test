@@ -1,165 +1,182 @@
-import 'package:audit_task/utils/date_time_helper.dart';
+import 'package:audit_task/presentation/widgets/audit_factory.dart';
+import 'package:audit_task/utils/DeviceUtils.dart';
+import 'package:audit_task/utils/WidgetFactory.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../controller/AuditController.dart';
-import 'filter_screen.dart';
+import '../../utils/app_colors.dart';
+import '../widgets/audit_header.dart';
+import '../widgets/audit_header_status.dart';
 
 class AuditScreen extends StatelessWidget {
-   AuditScreen({super.key});
-
-  final auditController = Get.put(AuditController());
+  const AuditScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Container(
-                  padding: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    color: Colors.lightGreen,
-                    borderRadius: BorderRadius.circular(9.0),
-                  ),
-                  child: const Center(child: Icon(Icons.arrow_back_ios_new))),
-              Row(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      auditController.fetchAuditData(forceReload: true);
-                    },
-                    child: const Icon(
-                      Icons.refresh,
-                      color: Colors.black,
+    return GetBuilder<AuditController>(
+      builder: (controller) {
+        return SafeArea(
+          child: Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              title: const Align(
+                  alignment: Alignment.centerRight, child: AuditHeader()),
+              backgroundColor: Colors.white,
+              elevation: 0.0,
+            ),
+            body: RefreshIndicator(
+              onRefresh: () async {
+                Get.find<AuditController>().fetchDataFromUseCase(refreshData: true);
+              },
+              child: Container(
+                padding: const EdgeInsets.only(
+                    left: _Dimens.PADDING_LEFT,
+                    top: _Dimens.PADDING_TOP,
+                    right: _Dimens.PADDING_RIGHT),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('My Audit'),
+                    const Text('Internal Audit'),
+                    SizedBox(
+                      height:
+                          DeviceUtils.fractionHeight(context, fraction: 30.0),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 20.0,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      auditController.tempSearchable.clear();
-                      auditController.tempSearchable.addAll(auditController.searchableAuditNumbers);
-                      Get.to(FilterScreen());
-                    },
-                    child: const Icon(
-                      Icons.double_arrow,
-                      color: Colors.black,
-                    ),
-                  )
-                ],
-              )
-            ],
-          ),
-          backgroundColor: Colors.white,
-          elevation: 0.0,
-        ),
-        body: Container(
-          padding: const EdgeInsets.only(left: 14.0, top: 10.0, right: 14.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text('My Audit'),
-              const Text('Internal Audit'),
-              Expanded(
-                child: GetX<AuditController>(
-                  builder: (controller) {
-                    if (controller.isLoading.value) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else {
-                      return Obx(() => ListView.builder(
-                        itemCount: controller.dataList.length,
-                        itemBuilder: (context, index) {
-                          return Card(
-                            elevation: 6.0,
-                            child: Container(
-                              margin: const EdgeInsets.only(
-                                  top: 20.0, left: 8.0, right: 8.0),
-                              height: 200.0,
-                              width: double.infinity,
-                              child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
+                    Expanded(
+                      child: GetX<AuditController>(
+                        builder: (controller) {
+                          if (controller.isLoading.value) {
+                            return WidgetFactory.buildLoading();
+                          } else {
+                            return Obx(
+                              () => ListView.builder(
+                                itemCount: controller.dataList.length,
+                                itemBuilder: (context, index) {
+                                  return Card(
+                                    elevation: 6.0,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                      side: const BorderSide(
+                                        color: Colors.white, // Border color
+                                        width: 2.0, // Border width
+                                      ),
+                                    ),
+                                    child: Container(
+                                      margin: const EdgeInsets.only(
+                                        top: _Dimens.MARGIN_TOP,
+                                        left: _Dimens.MARGIN_LEFT,
+                                        right: _Dimens.MARGIN_LEFT,
+                                      ),
+                                      height: DeviceUtils.fractionHeight(
+                                          context,
+                                          fraction: 3.8),
+                                      width: double.infinity,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          const Icon(Icons.calendar_today),
-                                          const SizedBox(
-                                            width: 6.0,
-                                          ),
-                                          Text(DateTimeHelper
-                                              .getFormattedDate(
-                                              DateTime.parse(controller
-                                                  .dataList[index]
-                                                  .reqDate!)))
+                                          AuditHeaderStatus(
+                                              controller.dataList[index]),
+                                          WidgetFactory.divider(context),
+                                          Text(controller
+                                              .dataList[index].auditName!),
+                                          WidgetFactory.emptyBox(height: 6.0),
+                                          Text(controller.dataList[index]
+                                                  .auditNumber ??
+                                              "Audit number not available"),
+                                          WidgetFactory.emptyBox(height: 6.0),
+                                          AuditFactory.rowWidget(
+                                              controller
+                                                  .dataList[index].plantName,
+                                              title: "Plant :"),
+                                          WidgetFactory.emptyBox(height: 6.0),
+                                          AuditFactory.rowWidget(
+                                              controller
+                                                  .dataList[index].templateName,
+                                              title: "Template :"),
+                                          WidgetFactory.divider(context),
+                                          Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              ElevatedButton(
+                                                onPressed: () {},
+                                                style: ElevatedButton.styleFrom(
+                                                  foregroundColor: Colors.white,
+                                                  minimumSize:
+                                                      const Size(20, 50),
+                                                  backgroundColor:
+                                                      Colors.orange,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                ),
+                                                child: const Text('Offsite'),
+                                              ),
+                                              WidgetFactory.emptyBox(
+                                                  width: 15.0),
+                                              ElevatedButton(
+                                                onPressed: () {},
+                                                style: ElevatedButton.styleFrom(
+                                                  foregroundColor: Colors.white,
+                                                  minimumSize:
+                                                      const Size(20, 50),
+                                                  backgroundColor:
+                                                      AppColors.primaryGreen,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                ),
+                                                child: const Text('Clear'),
+                                              ),
+                                              WidgetFactory.emptyBox(
+                                                  width: 15.0),
+                                              const Icon(
+                                                Icons.remove_red_eye_sharp,
+                                                color: Colors.black,
+                                                size: 30,
+                                              )
+                                            ],
+                                          )
                                         ],
                                       ),
-                                      Text(controller
-                                          .dataList[index].auditStatus!)
-                                    ],
-                                  ),
-                                  const Divider(
-                                    color: Colors.black,
-                                  ),
-                                  Text(controller
-                                      .dataList[index].auditName!),
-                                  const SizedBox(
-                                    height: 6.0,
-                                  ),
-                                  Visibility(
-                                    visible: controller
-                                        .dataList[index].auditNumber !=
-                                        null,
-                                    child: Text(controller
-                                        .dataList[index].auditNumber ??
-                                        ""),
-                                  ),
-                                  const SizedBox(
-                                    height: 6.0,
-                                  ),
-                                  const Row(
-                                    children: [
-                                      Text('Plant: '),
-                                      Text("Nameee")
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 4.0,
-                                  ),
-                                  const Row(
-                                    children: [
-                                      Text('Audit Coordinator: '),
-                                      Text("Name")
-                                    ],
-                                  ),
-                                  const Divider(
-                                    color: Colors.black,
-                                  ),
-                                ],
+                                    ),
+                                  );
+                                },
                               ),
-                            ),
-                          );
+                            );
+                          }
                         },
-                      ));
-                    }
-                  },
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
+}
+
+abstract class _Dimens {
+  static const double MARGIN_TOP = 20.0;
+  static const double MARGIN_LEFT = 8.0;
+  static const double PADDING_LEFT = 14.0;
+  static const double PADDING_TOP = 10.0;
+  static const double PADDING_RIGHT = 14.0;
 }

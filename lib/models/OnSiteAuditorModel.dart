@@ -11,7 +11,7 @@ class OnSiteAuditorModel extends BaseModel {
   @JsonKey(name: "name")
   String? name;
 
-  OnSiteAuditorModel(this.userID,this.name) : super();
+  OnSiteAuditorModel(this.userID, this.name) : super();
 
   factory OnSiteAuditorModel.fromJson(Map<String, dynamic> json) =>
       _$OnSiteAuditorModelFromJson(json);

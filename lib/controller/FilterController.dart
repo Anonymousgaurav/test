@@ -1,0 +1,48 @@
+import 'package:audit_task/models/AuditModel.dart';
+import 'package:get/get.dart';
+
+import '../presentation/screens/audit_screen.dart';
+import 'AuditController.dart';
+
+class FilterController extends GetxController {
+  final auditList = RxList<AuditModel>([]);
+  List<AuditModel> noFilterList = [];
+  RxList<String> allAuditNumbers = <String>[].obs;
+  RxList<String> plantNames = <String>[].obs;
+  List<String> tempSearchable = [];
+  List<String> searchableAuditNumbers = [];
+  List<AuditModel> auditModelList = [];
+
+  @override
+  void onInit() async {
+    AuditController auditController = Get.find<AuditController>();
+    auditList.value = auditController.dataList;
+    auditModelList.addAll(auditController.originalList);
+    _getAuditNumbers(auditController);
+    super.onInit();
+  }
+
+  void _getAuditNumbers(AuditController controller) {
+    for (var numbers in controller.auditList) {
+      if (numbers.auditNumber != null) {
+        allAuditNumbers.add(numbers.auditNumber!);
+      }
+    }
+  }
+
+  void onTapApply()
+  {
+  searchableAuditNumbers.clear();
+   searchableAuditNumbers.addAll(tempSearchable);
+   print('org leng>>> ${auditModelList.length}');
+    AuditController.to.filterItems(auditModelList, searchableAuditNumbers);
+    Get.to(() => const AuditScreen());
+  }
+
+  void onClear()
+  {
+    searchableAuditNumbers.clear();
+    tempSearchable.clear();
+  }
+
+}

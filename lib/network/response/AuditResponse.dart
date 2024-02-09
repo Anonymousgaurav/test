@@ -10,7 +10,6 @@ class AuditResponse implements BaseResponse {
   @JsonKey(name: "Data")
   final AuditModel data;
 
-
   AuditResponse(this.data);
 
   factory AuditResponse.fromJson(Map<String, dynamic> json) =>

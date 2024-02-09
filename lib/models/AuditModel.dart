@@ -28,14 +28,28 @@ class AuditModel extends BaseModel {
   String? templateName;
   @JsonKey(name: "auditTypeName")
   String? auditTypeName;
+  @JsonKey(name: "plantName")
+  String? plantName;
   @JsonKey(name: "supplierCoordinators")
   List<SupplierCoordinatorsModel>? supplierCoordinators;
   @JsonKey(name: "OnSiteAuditorModel")
   List<OnSiteAuditorModel>? onsiteAuditor;
 
-  AuditModel(this.auditID,this.reqDate,this.auditStatus,this.auditName,this.auditNumber,this.auditType,
-      this.suppliersName,this.templateID,this.templateName,this.auditTypeName,
-      this.onsiteAuditor,this.supplierCoordinators) : super();
+  AuditModel(
+      this.auditID,
+      this.reqDate,
+      this.auditStatus,
+      this.auditName,
+      this.auditNumber,
+      this.auditType,
+      this.suppliersName,
+      this.templateID,
+      this.templateName,
+      this.auditTypeName,
+      this.onsiteAuditor,
+      this.supplierCoordinators,
+      this.plantName)
+      : super();
 
   factory AuditModel.fromJson(Map<String, dynamic> json) =>
       _$AuditModelFromJson(json);
@@ -49,9 +63,8 @@ class AuditModel extends BaseModel {
       'auditStaus': auditStatus,
       'auditName': auditName,
       'auditNumber': auditNumber,
-      // 'auditTypeName' : auditTypeName,
-      // 'supplierName' : suppliersName
+      'plantName': plantName,
+      'templateName': templateName,
     };
   }
 }
-

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
-
 class DateTimeHelper {
   DateTimeHelper._();
 
-    DateTime? startDate;
+  DateTime? startDate;
   DateTime? endDate;
 
   static String getFormattedDate(DateTime dateTime) {
@@ -15,8 +14,8 @@ class DateTimeHelper {
     return '${dateTime.hour}:${dateTime.minute}';
   }
 
-
-  static Future<DateTime?> selectDate(BuildContext context, DateTime? initialDate) async {
+  static Future<DateTime?> selectDate(
+      BuildContext context, DateTime? initialDate) async {
     return await showDatePicker(
       context: context,
       initialDate: initialDate ?? DateTime.now(),
@@ -24,5 +23,4 @@ class DateTimeHelper {
       lastDate: DateTime(2101),
     );
   }
-
 }

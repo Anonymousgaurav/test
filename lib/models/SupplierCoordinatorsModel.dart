@@ -11,7 +11,7 @@ class SupplierCoordinatorsModel extends BaseModel {
   @JsonKey(name: "name")
   String? suppliersName;
 
-  SupplierCoordinatorsModel(this.userID,this.suppliersName) : super();
+  SupplierCoordinatorsModel(this.userID, this.suppliersName) : super();
 
   factory SupplierCoordinatorsModel.fromJson(Map<String, dynamic> json) =>
       _$SupplierCoordinatorsModelFromJson(json);
