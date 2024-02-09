@@ -11,7 +11,7 @@ import '../usecase/FetchDataUseCase.dart';
 
 class AuditController extends GetxController {
   List<AuditModel> get dataList => _dataList.value;
-  final AuditDAO _auditDAO = AuditDAO();
+  List<AuditModel> originalList = [];
   final Dio dio = Dio();
   final String apiUrl =
       'https://qasensata.empowerqlm.com/api/Mobile/Supplier/Audit/All/Complete/Details/100003';
@@ -32,27 +32,26 @@ class AuditController extends GetxController {
 
   Future<void> fetchDataFromUseCase({bool refreshData = false}) async {
     final result = await _fetchDataUseCase.fetchAuditData(refreshData: refreshData);
+    originalList.clear();
+    originalList.assignAll(result);
     _dataList.value = result;
     auditList.value = result;
     isLoading.value = false;
   }
 
   void filterItems(List<AuditModel> itemList, List<String> targetCategories) async {
-    List<AuditModel> temp;
-    targetCategories.isEmpty
-        ? temp = noFilterList
-        : temp = itemList
-            .where((item) => targetCategories.contains(item.auditNumber))
-            .toList();
-
-    if (targetCategories.isNotEmpty) {
-      _dataList.value.clear();
-      _dataList.value = temp;
-    }
+    var temp;
     if(targetCategories.isEmpty)
-      {
-        Get.find<AuditController>().fetchDataFromUseCase(refreshData: true);
-      }
+    {
+      temp = originalList;
+    }
+    else{
+      temp = itemList.where((item) =>
+          targetCategories.contains(item.auditNumber)
+      ).toList();
+    }
+    _dataList.value.clear();
+    _dataList.value = temp;
   }
 
 }

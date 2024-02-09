@@ -9,7 +9,6 @@ import '../models/AuditModel.dart';
 class FetchDataUseCase {
   final AuditDAO _auditDAO = AuditDAO();
   List<AuditModel> get dataList => _dataList.value;
-
   final Dio dio = Dio();
   final String apiUrl =
       'https://qasensata.empowerqlm.com/api/Mobile/Supplier/Audit/All/Complete/Details/100003';
@@ -48,6 +47,7 @@ class FetchDataUseCase {
       if (kDebugMode) {
         print('Error fetching data: $e');
       }
+
       isLoading.value = false;
     }
 
