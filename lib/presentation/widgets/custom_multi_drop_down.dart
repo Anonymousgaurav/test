@@ -1,4 +1,3 @@
-import 'package:audit_task/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomMultiselectDropDown extends StatefulWidget {
@@ -24,7 +23,7 @@ class _CustomMultiselectDropDownState extends State<CustomMultiselectDropDown> {
     return Container(
       margin: const EdgeInsets.only(top: 10.0),
       decoration:
-          BoxDecoration(border: Border.all(color: AppColors.primaryGreen)),
+          BoxDecoration(border: Border.all(color: Colors.grey)),
       child: ExpansionTile(
         iconColor: Colors.grey,
         title: const Text(
@@ -47,7 +46,6 @@ class _CustomMultiselectDropDownState extends State<CustomMultiselectDropDown> {
                       } else {
                         widget.listOFSelectedItem.add(val);
                       }
-                      //TODO??  use updateview in controller
                       setState(() {});
                     },
                     itemSelected: widget.listOFSelectedItem

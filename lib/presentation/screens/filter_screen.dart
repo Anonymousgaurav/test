@@ -6,7 +6,6 @@ import 'package:audit_task/utils/WidgetFactory.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
 import '../../controller/FilterController.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/constant.dart';
@@ -162,14 +161,12 @@ class FilterScreen extends StatelessWidget {
                       listOFStrings: controller.allAuditNumbers,
                       listOFSelectedItem: controller.tempSearchable,
                     ),
-                    WidgetFactory.emptyBox(height: 10.0),
                     ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: 1,
                       itemBuilder: (context, index) {
-                        return buildDropdown(controller.auditList[index],
-                            controller.auditList.value);
+                        return buildDropdown();
                       },
                     ),
                     WidgetFactory.emptyBox(height: 20.0),
@@ -177,14 +174,7 @@ class FilterScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () {
-                              controller.searchableAuditNumbers.clear();
-                              controller.searchableAuditNumbers
-                                  .addAll(controller.tempSearchable);
-                              controller.filterItems(controller.auditList,
-                                  controller.searchableAuditNumbers);
-                              Get.to(() => const AuditScreen());
-                            },
+                            onPressed: controller.onTapApply,
                             style: ElevatedButton.styleFrom(
                               primary: AppColors.primaryGreen,
                               onPrimary: Colors.black,
@@ -198,7 +188,7 @@ class FilterScreen extends StatelessWidget {
                         WidgetFactory.emptyBox(width: 15.0),
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: controller.onClear,
                             style: ElevatedButton.styleFrom(
                               primary: Colors.grey,
                               onPrimary: Colors.white,
@@ -239,7 +229,7 @@ class FilterScreen extends StatelessWidget {
     }
   }
 
-  Widget buildDropdown(AuditModel audit, List<AuditModel> list) {
+  Widget buildDropdown() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Container(
@@ -260,12 +250,9 @@ class FilterScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),
-              items: list.map<DropdownMenuItem<String>>((AuditModel value) {
-                return DropdownMenuItem<String>(
-                  value: "Select",
-                  child: Text(value.plantName ?? "No Plant name"),
-                );
-              }).toList(),
+              items: [
+
+              ],
               onChanged: (String? newValue) {},
             ),
             WidgetFactory.emptyBox(height: 15.0),
@@ -280,10 +267,7 @@ class FilterScreen extends StatelessWidget {
                 ),
               ),
               items: [
-                DropdownMenuItem<String>(
-                  value: audit.suppliersName.toString().split('.').last,
-                  child: Text(audit.suppliersName.toString().split('.').last),
-                ),
+
               ],
               onChanged: (String? newValue) {
                 // Handle dropdown value changes
@@ -301,10 +285,7 @@ class FilterScreen extends StatelessWidget {
                 ),
               ),
               items: [
-                DropdownMenuItem<String>(
-                  value: audit.auditTypeName.toString().split('.').last,
-                  child: Text(audit.auditTypeName.toString().split('.').last),
-                ),
+
               ],
               onChanged: (String? newValue) {
                 // Handle dropdown value changes

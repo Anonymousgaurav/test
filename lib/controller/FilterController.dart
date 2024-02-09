@@ -1,12 +1,12 @@
 import 'package:audit_task/models/AuditModel.dart';
 import 'package:get/get.dart';
 
+import '../presentation/screens/audit_screen.dart';
 import 'AuditController.dart';
 
 class FilterController extends GetxController {
   final auditList = RxList<AuditModel>([]);
   List<AuditModel> noFilterList = [];
-  final RxList<AuditModel> _dataList = <AuditModel>[].obs;
   RxList<String> allAuditNumbers = <String>[].obs;
   List<String> tempSearchable = [];
   List<String> searchableAuditNumbers = [];
@@ -27,14 +27,18 @@ class FilterController extends GetxController {
     }
   }
 
-  void filterItems(List<AuditModel> itemList, List<String> targetCategories) {
-    List<AuditModel> temp;
-    targetCategories.isEmpty
-        ? temp = noFilterList
-        : temp = itemList
-            .where((item) => targetCategories.contains(item.auditNumber))
-            .toList();
-    _dataList.value.clear();
-    _dataList.value = temp;
+  void onTapApply()
+  {
+    searchableAuditNumbers.clear();
+   searchableAuditNumbers
+        .addAll(tempSearchable);
+    AuditController.to.filterItems(auditList, searchableAuditNumbers);
+    Get.to(() => const AuditScreen());
+  }
+
+  void onClear()
+  {
+    searchableAuditNumbers.clear();
+    tempSearchable.clear();
   }
 }

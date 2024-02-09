@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
@@ -17,6 +19,8 @@ class AuditController extends GetxController {
   List<AuditModel> noFilterList = [];
   final FetchDataUseCase _fetchDataUseCase = FetchDataUseCase();
 
+  static AuditController get to => Get.find<AuditController>();
+
   @override
   void onInit() {
     fetchDataFromUseCase(refreshData: false);
@@ -31,13 +35,12 @@ class AuditController extends GetxController {
     isLoading.value = false;
   }
 
-  // void filterItems(List<AuditModel> itemList, List<String> targetCategories) {
-  //   List<AuditModel> temp;
-  //   targetCategories.isEmpty ? temp = noFilterList : temp = itemList.where((item) =>
-  //       targetCategories.contains(item.auditNumber)
-  //   ).toList();
-  //   _dataList.value.clear();
-  //   _dataList.value = temp;
-  // }
-  void updateView() => update([]);
+  void filterItems(List<AuditModel> itemList, List<String> targetCategories) {
+    List<AuditModel> temp;
+    targetCategories.isEmpty ? temp = noFilterList : temp = itemList.where((item) =>
+        targetCategories.contains(item.auditNumber)
+    ).toList();
+    _dataList.value.clear();
+    _dataList.value = temp;
+  }
 }

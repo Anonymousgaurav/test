@@ -1,9 +1,8 @@
 import 'package:audit_task/presentation/screens/audit_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'binding/controller_binding.dart';
 
-import 'models/binding/controller_binding.dart';
-import 'navigator/AppPages.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +23,6 @@ class MyApp extends StatelessWidget {
         useMaterial3: false,
       ),
       home: const AuditScreen(),
-      getPages: AppPages.pages,
     );
   }
 }

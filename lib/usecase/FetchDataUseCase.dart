@@ -8,18 +8,14 @@ import '../models/AuditModel.dart';
 
 class FetchDataUseCase {
   final AuditDAO _auditDAO = AuditDAO();
-
   List<AuditModel> get dataList => _dataList.value;
 
-  /// List<AuditModel> originalList = [];
   final Dio dio = Dio();
   final String apiUrl =
       'https://qasensata.empowerqlm.com/api/Mobile/Supplier/Audit/All/Complete/Details/100003';
   RxBool isLoading = true.obs;
   RxList<AuditModel> auditList = <AuditModel>[].obs;
   final RxList<AuditModel> _dataList = <AuditModel>[].obs;
-
-  /// RxList<String> auditNumbers = <String>[].obs;
 
   Future<List<AuditModel>> fetchAuditData({bool refreshData = false}) async {
     isLoading.value = true;
@@ -48,8 +44,6 @@ class FetchDataUseCase {
       } else {
         _dataList.assignAll(dataFromDatabase);
       }
-      // originalList.clear();
-      // originalList.addAll(dataList);
       isLoading.value = false;
     } catch (e) {
       if (kDebugMode) {
