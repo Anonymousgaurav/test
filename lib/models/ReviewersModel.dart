@@ -11,7 +11,7 @@ class ReviewersModel extends BaseModel {
   @JsonKey(name: "name")
   String? name;
 
-  ReviewersModel(this.userID,this.name) : super();
+  ReviewersModel(this.userID, this.name) : super();
 
   factory ReviewersModel.fromJson(Map<String, dynamic> json) =>
       _$ReviewersModelFromJson(json);

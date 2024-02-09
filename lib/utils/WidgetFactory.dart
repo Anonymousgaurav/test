@@ -7,12 +7,13 @@ class WidgetFactory {
     );
   }
 
-  static SizedBox emptyBox({double height= 0.0,double width = 0.0}) {
-    return  SizedBox(
+  static SizedBox emptyBox({double height = 0.0, double width = 0.0}) {
+    return SizedBox(
       height: height,
       width: width,
     );
   }
 
-  static Widget buildLoading() => const Center(child: CircularProgressIndicator());
+  static Widget buildLoading() =>
+      const Center(child: CircularProgressIndicator());
 }

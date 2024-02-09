@@ -16,5 +16,4 @@ class AppStyles {
         letterSpacing: 1.0,
         fontWeight: FontWeight.normal);
   }
-
 }

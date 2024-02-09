@@ -6,7 +6,9 @@ class CustomMultiselectDropDown extends StatefulWidget {
   List<String> listOFSelectedItem = [];
 
   CustomMultiselectDropDown(
-      {super.key,  required this.listOFStrings, required this.listOFSelectedItem});
+      {super.key,
+      required this.listOFStrings,
+      required this.listOFSelectedItem});
 
   @override
   createState() {
@@ -22,7 +24,7 @@ class _CustomMultiselectDropDownState extends State<CustomMultiselectDropDown> {
     return Container(
       margin: const EdgeInsets.only(top: 10.0),
       decoration:
-      BoxDecoration(border: Border.all(color: AppColors.primaryGreen)),
+          BoxDecoration(border: Border.all(color: AppColors.primaryGreen)),
       child: ExpansionTile(
         iconColor: Colors.grey,
         title: const Text(
@@ -72,7 +74,7 @@ class _ViewItem extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     return Padding(
       padding:
-      EdgeInsets.only(left: size.width * .032, right: size.width * .098),
+          EdgeInsets.only(left: size.width * .032, right: size.width * .098),
       child: Row(
         children: [
           SizedBox(

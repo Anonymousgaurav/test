@@ -5,12 +5,12 @@ import '../../utils/WidgetFactory.dart';
 import '../../utils/date_time_helper.dart';
 
 class AuditHeaderStatus extends StatelessWidget {
-   AuditHeaderStatus(this.dataList) : super();
+  AuditHeaderStatus(this.dataList) : super();
   AuditModel dataList;
 
   @override
   Widget build(BuildContext context) {
-    return  Row(
+    return Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -19,13 +19,10 @@ class AuditHeaderStatus extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Icon(
-                Icons.calendar_today),
-            WidgetFactory.emptyBox(
-                width: 10.0),
+            const Icon(Icons.calendar_today),
+            WidgetFactory.emptyBox(width: 10.0),
             Text(
-              DateTimeHelper
-                  .getFormattedDate(
+              DateTimeHelper.getFormattedDate(
                 DateTime.parse(dataList.reqDate!),
               ),
             )

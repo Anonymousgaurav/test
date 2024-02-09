@@ -7,6 +7,6 @@ class AppBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => AuditController());
-     Get.lazyPut(() => FilterController());
+    Get.lazyPut(() => FilterController());
   }
 }

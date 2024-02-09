@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 import '../database/dao/AuditDAO.dart';
 import '../database/tables/AuditTable.dart';
@@ -11,7 +8,9 @@ import '../models/AuditModel.dart';
 
 class FetchDataUseCase {
   final AuditDAO _auditDAO = AuditDAO();
+
   List<AuditModel> get dataList => _dataList.value;
+
   /// List<AuditModel> originalList = [];
   final Dio dio = Dio();
   final String apiUrl =
@@ -19,6 +18,7 @@ class FetchDataUseCase {
   RxBool isLoading = true.obs;
   RxList<AuditModel> auditList = <AuditModel>[].obs;
   final RxList<AuditModel> _dataList = <AuditModel>[].obs;
+
   /// RxList<String> auditNumbers = <String>[].obs;
 
   Future<List<AuditModel>> fetchAuditData({bool refreshData = false}) async {
