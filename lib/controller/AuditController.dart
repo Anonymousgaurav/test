@@ -37,10 +37,14 @@ class AuditController extends GetxController {
 
   void filterItems(List<AuditModel> itemList, List<String> targetCategories) {
     List<AuditModel> temp;
-    targetCategories.isEmpty ? temp = noFilterList : temp = itemList.where((item) =>
-        targetCategories.contains(item.auditNumber)
-    ).toList();
-    _dataList.value.clear();
-    _dataList.value = temp;
+    targetCategories.isEmpty
+        ? temp = noFilterList
+        : temp = itemList
+            .where((item) => targetCategories.contains(item.auditNumber))
+            .toList();
+    if (targetCategories.isNotEmpty) {
+      _dataList.value.clear();
+      _dataList.value = temp;
+    }
   }
 }

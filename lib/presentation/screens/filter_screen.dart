@@ -167,7 +167,7 @@ class FilterScreen extends StatelessWidget {
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: 1,
                       itemBuilder: (context, index) {
-                        return buildDropdown(controller.plantNames.value);
+                        return buildDropdown(controller);
                       },
                     ),
                     WidgetFactory.emptyBox(height: 20.0),
@@ -214,7 +214,7 @@ class FilterScreen extends StatelessWidget {
   }
 
 
-  Widget buildDropdown(List<String> plantNames) {
+  Widget buildDropdown(FilterController controller) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Container(
@@ -236,13 +236,9 @@ class FilterScreen extends StatelessWidget {
                 ),
               ),
               items: [
-                DropdownMenuItem<String>(
-                  value: plantNames.first.toString().split('.').last,
-                  child: Text(plantNames.first.toString().split('.').last),
-                ),
-              ],
-              onChanged: (String? newValue) {
-              },
+
+              ],              onChanged: (String? value) {  },
+
             ),
 
             WidgetFactory.emptyBox(height: 15.0),
@@ -303,14 +299,6 @@ class FilterScreen extends StatelessWidget {
       endDateController.text = DateFormat('yy/MMM/dd').format(_endDate!);
     }
   }
-
-  void _getPlantName(List<AuditModel> auditList)
-  {
-    for (var name in auditList) {
-      if (name.plantName != "") {
-        plantName.addAll(plantName);
-      }
-    }  }
 
 }
 

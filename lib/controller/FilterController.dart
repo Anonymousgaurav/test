@@ -17,7 +17,6 @@ class FilterController extends GetxController {
     AuditController auditController = Get.find<AuditController>();
     auditList.value = auditController.dataList;
     _getAuditNumbers(auditController);
-    _getPlantNames(auditController);
     super.onInit();
   }
 
@@ -29,13 +28,7 @@ class FilterController extends GetxController {
     }
   }
 
-  void _getPlantNames(AuditController controller) {
-    for (var numbers in controller.auditList) {
-      if (numbers.plantName != null) {
-        plantNames.add(numbers.plantName!);
-      }
-    }
-  }
+
 
   void onTapApply()
   {
