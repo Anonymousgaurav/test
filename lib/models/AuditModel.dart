@@ -51,6 +51,7 @@ class AuditModel extends BaseModel {
       'auditStaus': auditStatus,
       'auditName': auditName,
       'auditNumber': auditNumber,
+      'plantName': plantName,
     };
   }
 }

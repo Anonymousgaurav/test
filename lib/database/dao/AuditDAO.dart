@@ -6,7 +6,7 @@ class AuditDAO {
   final AuditDatabase dbProvider;
 
   AuditDAO([AuditDatabase? dbProvider])
-      : this.dbProvider = dbProvider ?? AuditDatabase.dbProvider;
+      : dbProvider = dbProvider ?? AuditDatabase.dbProvider;
 
 
   Future<void> insertAudit(String tablename, AuditModel audit) async {

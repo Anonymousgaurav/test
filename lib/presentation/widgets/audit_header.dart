@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../controller/AuditController.dart';
 import '../../controller/FilterController.dart';
 
+const FILTER_IMAGE = "assets/images/filter.png";
 class AuditHeader extends StatelessWidget {
   const AuditHeader({super.key});
 
@@ -17,10 +18,8 @@ class AuditHeader extends StatelessWidget {
             Get.find<FilterController>().searchableAuditNumbers);
         Get.to(FilterScreen());
       },
-      child: const Icon(
-        Icons.filter,
-        color: Colors.black,
-      ),
+      child: Image.asset(FILTER_IMAGE),
+
     );
   }
 }

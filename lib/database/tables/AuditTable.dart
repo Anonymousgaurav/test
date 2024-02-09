@@ -10,6 +10,7 @@ class AuditTable {
   static const String TEMPLATE_NAME = "template_name";
   static const String AUDIT_TYPE_NAME = "auditTypeName";
   static const String AUDIT_REQUEST_DATE = "requestDate";
+  static const String PLANT_NAME = "plantName";
 
   static void createTable(Database database, int version) async {
     await database.execute('''
@@ -18,7 +19,8 @@ class AuditTable {
             $AUDIT_REQUEST_DATE TEXT,
             $AUDIT_STATUS TEXT,
             $AUDIT_NAME TEXT,
-            $AUDIT_NUMBER TEXT
+            $AUDIT_NUMBER TEXT,
+            $PLANT_NAME TEXT
           )
         ''');
   }
